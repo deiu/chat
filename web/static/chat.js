@@ -7,7 +7,7 @@ let currentOnlineUsers = [];
 
 function getWebSocketUrl(path) {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.host; // Includes hostname and port
+    const host = window.location.host;
     return `${protocol}//${host}${path}`;
 }
 
@@ -32,7 +32,6 @@ window.login = function() {
         }
     
         if (data.type === 'logout') {
-            // Remove the logged out user from conversations if needed
             if (selectedRecipient === data.username) {
                 selectedRecipient = null;
                 document.getElementById('currentRecipient').textContent = '';
@@ -55,7 +54,6 @@ window.login = function() {
 
     ws.onclose = function(event) {
         if (!event.wasClean) {
-            // Check if the close was due to username conflict
             const usernameInput = document.getElementById('usernameInput');
             usernameInput.classList.add('error');
             usernameInput.value = '';
@@ -123,7 +121,24 @@ function handleIncomingMessage(data) {
 
 function updateOnlineUsers(users) {
     currentOnlineUsers = users;
-    updateUsersList(users);
+    const usersList = document.getElementById('usersList');
+    usersList.innerHTML = '';
+    
+    const filteredUsers = users.filter(user => user.username !== currentUsername);
+    
+    filteredUsers.forEach(user => {
+        const userDiv = document.createElement('div');
+        userDiv.className = 'user-item';
+        if (user.username === selectedRecipient) {
+            userDiv.className += ' active';
+        }
+        if (unreadMessages.has(user.username)) {
+            userDiv.className += ' has-unread';
+        }
+        userDiv.textContent = user.username;
+        userDiv.onclick = () => selectRecipient(user.username);
+        usersList.appendChild(userDiv);
+    });
 }
 
 function updateUsersList(users) {
@@ -149,9 +164,10 @@ function updateUsersList(users) {
 
 function selectRecipient(username) {
     selectedRecipient = username;
-    document.getElementById('currentRecipient').textContent = username;
-    document.getElementById('messageInput').disabled = false;
+    document.getElementById('currentRecipient').textContent = username;    
     document.getElementById('sendButton').disabled = false;
+    document.querySelector('.placeholder-screen').style.display = 'none';
+    document.querySelector('.chat-content').style.display = 'flex';
     
     unreadMessages.delete(username);
     document.title = `Chat - ${currentUsername}`;
@@ -161,6 +177,10 @@ function selectRecipient(username) {
     });
     const currentConversation = getOrCreateConversation(getConversationId(username));
     currentConversation.style.display = 'block';
+
+    const messageInput = document.getElementById('messageInput');
+    messageInput.disabled = false;
+    messageInput.focus(); // Add focus here
     
     updateUsersList(currentOnlineUsers);
 }
@@ -198,6 +218,8 @@ function resetUI() {
     document.getElementById('usernameInput').value = '';
     document.getElementById('currentRecipient').textContent = '';
     document.getElementById('currentUserDisplay').textContent = '';
+    document.querySelector('.placeholder-screen').style.display = 'flex';
+    document.querySelector('.chat-content').style.display = 'none';
     document.title = 'Direct Chat';
     currentUsername = null;
     selectedRecipient = null;
@@ -221,6 +243,12 @@ window.onfocus = function() {
         document.title = `Chat - ${currentUsername}`;
     }
 };
+
+document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        login();
+    }
+});
 
 document.getElementById('messageInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {

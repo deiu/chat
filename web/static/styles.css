@@ -30,6 +30,9 @@ body {
 .user-section {
     padding: 15px 20px;
     border-bottom: 1px solid #e2e8f0;
+    height: 60px; 
+    display: flex;
+    align-items: self-end;
 }
 
 .current-user {
@@ -38,6 +41,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .online-users {
@@ -81,6 +85,9 @@ body {
 .chat-header {
     padding: 15px 20px;
     border-bottom: 1px solid #e2e8f0;
+    height: 60px; 
+    display: flex;
+    align-items: center;
 }
 
 .chat-header h2 {
@@ -160,6 +167,7 @@ button:disabled {
 
 .logout-btn {
     background-color: #e53e3e;
+    margin-left: auto; 
 }
 
 .logout-btn:hover {
