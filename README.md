@@ -53,7 +53,8 @@ cd chat
 2. Build and run the application:
 
 ```bash
-docker-compose up --build
+docker build -t chat .
+docker run -p 8080:8080 chat
 ```
 
 3. Access the application in your browser at `http://localhost:8080`.
@@ -74,25 +75,6 @@ docker-compose up --build
 ```
 
 3. Access the application in your browser at `http://localhost:8080`.
-
-### Using Docker
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/deiu/chat.git
-cd chat
-```
-
-2. Build and run the application:
-
-```bash
-docker build -t chat .
-docker run -p 8080:8080 chat
-```
-
-3. Access the application in your browser at `http://localhost:8080`.
-
 
 ## Contributing
 
