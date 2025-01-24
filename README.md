@@ -2,6 +2,8 @@
 
 A real-time chat application with direct messaging support, built with Go and WebSocket.
 
+You can see a live demo at https://deiu-chat.onrender.com but you may have to wait up to a minutefor the server to restart after a long period of inactivity.
+
 ## Features
 
 - Real-time messaging using WebSocket
