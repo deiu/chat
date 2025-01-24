@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Direct Chat</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+    <head>
+        <title>Direct Chat</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
 <body>
     <div id="login">
         <input type="text" id="usernameInput" class="text-input" placeholder="Enter your username" autofocus>
@@ -17,6 +18,7 @@
                     <div>You: <span id="currentUserDisplay"></span></div>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
+                <button class="close-sidebar" onclick="toggleSidebar()">☰</button>
             </div>
             <div class="online-users">
                 <h3>Online Users</h3>
@@ -25,15 +27,18 @@
         </div>
 
         <div class="chat-area">
+            <div class="chat-header">
+                <h2>
+                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                    <span id="chat-with-text" style="display: none;">Chat with: </span>
+                    <span id="currentRecipient"></span>
+                </h2>
+            </div>
             <div class="placeholder-screen">
                 <h2>Welcome to Direct Chat</h2>
                 <p>Select a user from the Online Users list to start chatting</p>
             </div>
-            
             <div class="chat-content">
-                <div class="chat-header">
-                    <h2>Chat with: <span id="currentRecipient"></span></h2>
-                </div>
                 <div id="conversations"></div>
                 <div class="input-area">
                     <input type="text" id="messageInput" class="text-input" placeholder="Type a message..." disabled>

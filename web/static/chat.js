@@ -164,11 +164,15 @@ function updateUsersList(users) {
 
 function selectRecipient(username) {
     selectedRecipient = username;
-    document.getElementById('currentRecipient').textContent = username;    
+    document.getElementById('currentRecipient').textContent = username;
+    document.getElementById('messageInput').disabled = false;
     document.getElementById('sendButton').disabled = false;
+    
+    // Show chat content, hide placeholder
     document.querySelector('.placeholder-screen').style.display = 'none';
     document.querySelector('.chat-content').style.display = 'flex';
-    
+    document.getElementById('chat-with-text').style.display = 'inline';
+
     unreadMessages.delete(username);
     document.title = `Chat - ${currentUsername}`;
     
@@ -183,6 +187,8 @@ function selectRecipient(username) {
     messageInput.focus(); // Add focus here
     
     updateUsersList(currentOnlineUsers);
+
+    hideSidebarOnMobile();
 }
 
 function sendMessage() {
@@ -220,6 +226,7 @@ function resetUI() {
     document.getElementById('currentUserDisplay').textContent = '';
     document.querySelector('.placeholder-screen').style.display = 'flex';
     document.querySelector('.chat-content').style.display = 'none';
+    document.getElementById('chat-with-text').style.display = 'none';
     document.title = 'Direct Chat';
     currentUsername = null;
     selectedRecipient = null;
@@ -227,6 +234,18 @@ function resetUI() {
     unreadMessages.clear();
     currentOnlineUsers = [];
     ws = null;
+}
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('show');
+}
+
+function hideSidebarOnMobile() {
+    if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.remove('show');
+    }
 }
 
 function escapeHtml(unsafe) {
@@ -253,5 +272,23 @@ document.getElementById('usernameInput').addEventListener('keypress', function(e
 document.getElementById('messageInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         sendMessage();
+    }
+});
+
+document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        const menuToggle = document.querySelector('.menu-toggle');
+        
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('show')) {
+            sidebar.classList.remove('show');
+        }
+    }
+});
+
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.remove('show');
     }
 });
