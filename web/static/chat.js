@@ -122,7 +122,18 @@ function handleIncomingMessage(data) {
     
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message';
-    messageDiv.innerHTML = `<span class="username">${escapeHtml(data.from)}:</span> ${escapeHtml(data.content)}`;
+    messageDiv.innerHTML = `
+        <div class="user-avatar" style="background-color: ${getAvatarColor(data.from)}">
+            ${data.from.charAt(0).toUpperCase()}
+        </div>
+        <div class="message-content-wrapper">
+            <div class="message-header">
+                <span class="message-sender">${escapeHtml(data.from)}</span>
+                <span class="message-time">${formatTime(new Date())}</span>
+            </div>
+            <div class="message-text">${escapeHtml(data.content)}</div>
+        </div>
+    `;
     conversation.appendChild(messageDiv);
     conversation.scrollTop = conversation.scrollHeight;
 
@@ -200,7 +211,7 @@ function selectRecipient(username) {
 
     const messageInput = document.getElementById('messageInput');
     messageInput.disabled = false;
-    messageInput.focus(); // Add focus here
+    messageInput.focus();
     
     updateUsersList(currentOnlineUsers);
 
@@ -224,7 +235,18 @@ function sendMessage() {
         const conversation = getOrCreateConversation(conversationId);
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message';
-        messageDiv.innerHTML = `<span class="username">You:</span> ${escapeHtml(content)}`;
+        messageDiv.innerHTML = `
+            <div class="user-avatar" style="background-color: ${getAvatarColor(currentUsername)}">
+                ${currentUsername.charAt(0).toUpperCase()}
+            </div>
+            <div class="message-content-wrapper">
+                <div class="message-header">
+                    <span class="message-sender">You</span>
+                    <span class="message-time">${formatTime(new Date())}</span>
+                </div>
+                <div class="message-text">${escapeHtml(content)}</div>
+            </div>
+        `;
         conversation.appendChild(messageDiv);
         conversation.scrollTop = conversation.scrollHeight;
         
@@ -262,6 +284,24 @@ function hideSidebarOnMobile() {
         const sidebar = document.querySelector('.sidebar');
         sidebar.classList.remove('show');
     }
+}
+
+function getAvatarColor(username) {
+    // Generate consistent color based on username
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 45%)`; // Consistent, vibrant colors
+}
+
+function formatTime(date) {
+    return date.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false
+    });
 }
 
 function escapeHtml(unsafe) {
