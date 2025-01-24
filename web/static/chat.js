@@ -190,7 +190,7 @@ function selectRecipient(username) {
     document.getElementById('chat-with-text').style.display = 'inline';
 
     unreadMessages.delete(username);
-    document.title = `Chat - ${currentUsername}`;
+    document.title = `${currentUsername}`;
     
     Object.values(conversations).forEach(conv => {
         conv.style.display = 'none';

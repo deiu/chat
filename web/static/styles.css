@@ -30,9 +30,14 @@ body {
 .user-section {
     padding: 15px 20px;
     border-bottom: 1px solid #e2e8f0;
-    height: 60px; 
+    height: 60px;
+    min-height: 60px;  /* Ensure minimum height */
     display: flex;
-    align-items: self-end;
+    align-items: center;
+    position: sticky;  /* Keep at top */
+    top: 0;
+    background: white;  /* Ensure background is solid */
+    z-index: 10;
 }
 
 .current-user {
@@ -80,19 +85,33 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .chat-header {
     padding: 15px 20px;
     border-bottom: 1px solid #e2e8f0;
-    height: 60px; 
+    height: 60px;
+    min-height: 60px;  /* Ensure minimum height */
     display: flex;
     align-items: center;
+    position: sticky;  /* Keep at top */
+    top: 0;
+    background: white;  /* Ensure background is solid */
+    z-index: 10;
 }
 
 .chat-header h2 {
     font-size: 1.1em;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-header h2 #currentRecipient {
+    display: inline;
 }
 
 .conversation {
@@ -125,6 +144,12 @@ body {
     border-top: 1px solid #e2e8f0;
     display: flex;
     gap: 10px;
+    height: 60px;
+    min-height: 60px;
+    background: white;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
 }
 
 .text-input {
@@ -196,6 +221,7 @@ button:disabled {
     color: #718096;
     padding: 20px;
     text-align: center;
+    height: calc(100vh - 120px);
 }
 
 .placeholder-screen h2 {
@@ -217,7 +243,7 @@ button:disabled {
     display: none;
     flex-direction: column;
     flex-grow: 1;
-    height: 100%;
+    overflow: hidden;
 }
 
 .chat-content.show {
@@ -235,6 +261,7 @@ button:disabled {
 #conversations {
     flex-grow: 1;
     overflow-y: auto;
+    padding: 20px;
 }
 
 @keyframes blink {
@@ -285,7 +312,7 @@ button:disabled {
     }
 
     .chat-header {
-        position: relative;
+        position: sticky;
         z-index: 10;
         background: white;
     }
@@ -316,7 +343,7 @@ button:disabled {
     }
 
     .user-section {
-        position: relative;
+        position: sticky;
     }
 
     .current-user {
