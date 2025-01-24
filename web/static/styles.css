@@ -210,7 +210,7 @@ button:disabled {
 }
 
 .chat-header h2 span {
-    display: none;  /* Hide by default */
+    display: none; 
 }
 
 .chat-content {
